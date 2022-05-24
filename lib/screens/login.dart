@@ -1,4 +1,6 @@
+import 'package:e_softwarica/database/database_instance.dart';
 import 'package:flutter/material.dart';
+import 'package:motion_toast/motion_toast.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -9,9 +11,24 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  _userLogin(email, password) async {
+    try {
+      final database = await DatabaseInstance.instance.getDatabaseInstance();
+      final user = await database.userDAO.login(email, password);
+      if (user != null) {
+        Navigator.pushReplacementNamed(context, '/navigation');
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      MotionToast.error(
+        description: const Text("Invalid Credentials"),
+      ).show(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +44,7 @@ class _LoginState extends State<Login> {
           child: Column(
             children: [
               TextFormField(
+                controller: _emailController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email',
@@ -36,11 +54,18 @@ class _LoginState extends State<Login> {
                     borderSide: BorderSide(color: Colors.black),
                   ),
                 ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter email';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(
                 height: 10,
               ),
               TextFormField(
+                controller: _passwordController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Password',
@@ -50,6 +75,12 @@ class _LoginState extends State<Login> {
                     borderSide: BorderSide(color: Colors.black),
                   ),
                 ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Please enter password';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(
                 height: 10,
@@ -58,7 +89,10 @@ class _LoginState extends State<Login> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/navigation');
+                    if (_formKey.currentState!.validate()) {
+                      _userLogin(
+                          _emailController.text, _passwordController.text);
+                    }
                   },
                   child: const Text('Login'),
                 ),
