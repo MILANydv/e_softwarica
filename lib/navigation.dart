@@ -1,5 +1,4 @@
 import 'package:e_softwarica/screens/add_student.dart';
-import 'package:e_softwarica/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class ButtomNavigation extends StatefulWidget {
@@ -12,7 +11,7 @@ class ButtomNavigation extends StatefulWidget {
 class _ButtomNavigationState extends State<ButtomNavigation> {
   int _selectedIndex = 0;
   static const List<Widget> _pages = <Widget>[
-    Home(),
+    // Home(),
     AddStudent(),
     Text('Page 3'),
   ];
