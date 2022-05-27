@@ -1,4 +1,5 @@
 import 'package:e_softwarica/screens/add_student.dart';
+import 'package:e_softwarica/screens/permission_screen.dart';
 import 'package:e_softwarica/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class _ButtomNavigationState extends State<ButtomNavigation> {
   static const List<Widget> _pages = <Widget>[
     Home(),
     AddStudent(),
-    Text('Page 3'),
+    GalleryScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -42,8 +43,8 @@ class _ButtomNavigationState extends State<ButtomNavigation> {
             backgroundColor: Color.fromARGB(255, 47, 39, 200),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: 'About Us',
+            icon: Icon(Icons.camera_alt_rounded),
+            label: 'Camera',
             backgroundColor: Color.fromARGB(255, 68, 43, 229),
           ),
         ],
